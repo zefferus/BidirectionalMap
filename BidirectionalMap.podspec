@@ -8,6 +8,6 @@ Pod::Spec.new do |spec|
 
   spec.platform = :ios, "9.3"
   spec.requires_arc = true
-  spec.source = { git: "https://github.com/zefferus/BidirectionalMap.git", tag: "v#{spec.version}", submodules: true }
+  spec.source = { git: "https://github.com/zefferus/BidirectionalMap.git", tag: "#{spec.version}", submodules: false }
   spec.source_files = "BidirectionalMap/**/*.{h,swift}"
 end
