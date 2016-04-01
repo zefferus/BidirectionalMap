@@ -23,7 +23,7 @@ class BidirectionalMapTest: XCTestCase {
     }
 
     func testInitFromSequence() {
-        let expectedDict = ["One": 1, "Two": 2, "Three": 3, "Four": 4]
+        let expectedDict: [String: Int] = ["One": 1, "Two": 2, "Three": 3, "Four": 4]
         let bidirectionalMap: BidirectionalMap<String, Int> = BidirectionalMap(expectedDict)
         for (key, value) in expectedDict {
             XCTAssertEqual(bidirectionalMap[key], value)
@@ -72,14 +72,14 @@ class BidirectionalMapTest: XCTestCase {
             "One": 1, "Two": 2, "Three": 3, "Four": 4
         ]
         for (key, value) in bidirectionalMap {
-            if let index = bidirectionalMap.indexForKey(key) {
+            if let index = bidirectionalMap.index(forKey: key) {
                 XCTAssertEqual(bidirectionalMap[index].0, key)
                 XCTAssertEqual(bidirectionalMap[index].1, value)
             } else {
                 XCTFail()
             }
         }
-        XCTAssertNil(bidirectionalMap.indexForKey("not-in-map"))
+        XCTAssertNil(bidirectionalMap.index(forKey: "not-in-map"))
     }
 
     func testIndexForValue() {
@@ -87,14 +87,14 @@ class BidirectionalMapTest: XCTestCase {
             "One": 1, "Two": 2, "Three": 3, "Four": 4
         ]
         for (key, value) in bidirectionalMap {
-            if let index = bidirectionalMap.indexForValue(value) {
+            if let index = bidirectionalMap.index(forValue: value) {
                 XCTAssertEqual(bidirectionalMap[index].0, key)
                 XCTAssertEqual(bidirectionalMap[index].1, value)
             } else {
                 XCTFail()
             }
         }
-        XCTAssertNil(bidirectionalMap.indexForValue(-1))
+        XCTAssertNil(bidirectionalMap.index(forValue: -1))
     }
 
     func testSubscriptIndex() {
@@ -102,7 +102,7 @@ class BidirectionalMapTest: XCTestCase {
             "One": 1, "Two": 2, "Three": 3, "Four": 4
         ]
         for (key, value) in bidirectionalMap {
-            if let index = bidirectionalMap.indexForValue(value) {
+            if let index = bidirectionalMap.index(forValue: value) {
                 XCTAssertEqual(bidirectionalMap[index].0, key)
                 XCTAssertEqual(bidirectionalMap[index].1, value)
             } else {
@@ -205,11 +205,11 @@ class BidirectionalMapTest: XCTestCase {
         var bidirectionalMap: BidirectionalMap<String, Int> = [
             "One": 1, "Two": 2, "Three": 3, "Four": 4
         ]
-        guard let index = bidirectionalMap.indexForKey("Two") else {
+        guard let index = bidirectionalMap.index(forKey: "Two") else {
             XCTFail()
             return
         }
-        let (key, value) = bidirectionalMap.removeAtIndex(index)
+        let (key, value) = bidirectionalMap.remove(at: index)
         XCTAssertEqual(key, "Two")
         XCTAssertEqual(value, 2)
         for (key, value) in bidirectionalMap {
@@ -222,8 +222,8 @@ class BidirectionalMapTest: XCTestCase {
         var bidirectionalMap: BidirectionalMap<String, Int> = [
             "One": 1, "Two": 2, "Three": 3, "Four": 4
         ]
-        XCTAssertEqual(bidirectionalMap.removeValueForKey("Two"), 2)
-        XCTAssertNil(bidirectionalMap.removeValueForKey("Five"))
+        XCTAssertEqual(bidirectionalMap.removeValue(forKey: "Two"), 2)
+        XCTAssertNil(bidirectionalMap.removeValue(forKey: "Five"))
 
         for (key, value) in bidirectionalMap {
             XCTAssertEqual(bidirectionalMap[key], value)
@@ -235,8 +235,8 @@ class BidirectionalMapTest: XCTestCase {
         var bidirectionalMap: BidirectionalMap<String, Int> = [
             "One": 1, "Two": 2, "Three": 3, "Four": 4
         ]
-        XCTAssertEqual(bidirectionalMap.removeKeyForValue(2), "Two")
-        XCTAssertNil(bidirectionalMap.removeKeyForValue(5))
+        XCTAssertEqual(bidirectionalMap.removeKey(forValue: 2), "Two")
+        XCTAssertNil(bidirectionalMap.removeKey(forValue: 5))
 
         for (key, value) in bidirectionalMap {
             XCTAssertEqual(bidirectionalMap[key], value)
@@ -258,14 +258,14 @@ class BidirectionalMapTest: XCTestCase {
             "One": 1, "Two": 2, "Three": 3, "Four": 4
         ]
         XCTAssertEqual(bidirectionalMap.count, 4)
-        bidirectionalMap.removeAll(keepCapacity: true)
+        bidirectionalMap.removeAll(keepingCapacity: true)
         XCTAssertEqual(bidirectionalMap.count, 0)
     }
 
     func testCount() {
         var bidirectionalMap: BidirectionalMap<String, Int> = BidirectionalMap()
         XCTAssertEqual(bidirectionalMap.count, 0)
-        for (index, value) in ["One", "Two", "Three", "Four"].enumerate() {
+        for (index, value) in ["One", "Two", "Three", "Four"].enumerated() {
             bidirectionalMap[value] = index
             XCTAssertEqual(bidirectionalMap.count, index + 1)
         }
@@ -359,7 +359,7 @@ class BidirectionalMapTest: XCTestCase {
             "One": 1, "Two": 2, "Three": 3, "Four": 4
         ]
         var seenKeys: Set<String> = []
-        var generator = bidirectionalMap.generate()
+        var generator = bidirectionalMap.makeIterator()
         while let (key, value) = generator.next() {
             XCTAssertEqual(bidirectionalMap[key], value)
             XCTAssertEqual(bidirectionalMap[value: value], key)

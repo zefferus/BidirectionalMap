@@ -32,8 +32,8 @@ private extension Dictionary {
 }
 
 public struct BidirectionalMap<Key: Hashable, Value: Hashable>:
-CollectionType, DictionaryLiteralConvertible {
-    public typealias Element = (Key, Value)
+Collection, DictionaryLiteralConvertible {
+    public typealias Element = (key: Key, value: Value)
     public typealias Index = BidirectionalMapIndex<Key, Value>
     private var leftDictionary: [Key: Value]
     private var rightDictionary: [Value: Key]
@@ -64,8 +64,8 @@ CollectionType, DictionaryLiteralConvertible {
 
      - parameter sequence:
      */
-    public init<S: SequenceType where S.Generator.Element == (Key, Value)>(_ sequence: S) {
-        self.init(minimumCapacity: sequence.underestimateCount())
+    public init<S: Sequence where S.Iterator.Element == (key: Key, value: Value)>(_ sequence: S) {
+        self.init(minimumCapacity: sequence.underestimatedCount)
         for (key, value) in sequence {
             self[key] = value
         }
@@ -103,8 +103,8 @@ CollectionType, DictionaryLiteralConvertible {
      in the bidirectional map
      */
     @warn_unused_result
-    public func indexForKey(key: Key) -> BidirectionalMapIndex<Key, Value>? {
-        return BidirectionalMapIndex(dictionaryIndex: leftDictionary.indexForKey(key))
+    public func index(forKey key: Key) -> BidirectionalMapIndex<Key, Value>? {
+        return BidirectionalMapIndex(dictionaryIndex: leftDictionary.index(forKey: key))
     }
 
     /**
@@ -113,11 +113,11 @@ CollectionType, DictionaryLiteralConvertible {
      in the bidirectional map
      */
     @warn_unused_result
-    public func indexForValue(value: Value) -> BidirectionalMapIndex<Key, Value>? {
+    public func index(forValue value: Value) -> BidirectionalMapIndex<Key, Value>? {
         guard let key = rightDictionary[value] else {
             return nil
         }
-        return BidirectionalMapIndex(dictionaryIndex: leftDictionary.indexForKey(key))
+        return BidirectionalMapIndex(dictionaryIndex: leftDictionary.index(forKey: key))
     }
 
     /**
@@ -224,9 +224,9 @@ CollectionType, DictionaryLiteralConvertible {
      - Complexity: O(`self.count`)
      - returns: The removed `Element`
      */
-    public mutating func removeAtIndex(index: BidirectionalMapIndex<Key, Value>) -> (Key, Value) {
-        let pair = leftDictionary.removeAtIndex(index.dictionaryIndex)
-        rightDictionary.removeValueForKey(pair.1)
+    public mutating func remove(at index: BidirectionalMapIndex<Key, Value>) -> (Key, Value) {
+        let pair = leftDictionary.remove(at: index.dictionaryIndex)
+        rightDictionary.removeValue(forKey: pair.1)
         return pair
     }
 
@@ -237,11 +237,11 @@ CollectionType, DictionaryLiteralConvertible {
      - returns: The value that was removed, or `nil` if the key was not present
      in the bidirectional map
      */
-    public mutating func removeValueForKey(key: Key) -> Value? {
-        guard let value = leftDictionary.removeValueForKey(key) else {
+    public mutating func removeValue(forKey key: Key) -> Value? {
+        guard let value = leftDictionary.removeValue(forKey: key) else {
             return nil
         }
-        rightDictionary.removeValueForKey(value)
+        rightDictionary.removeValue(forKey: value)
         return value
     }
 
@@ -252,11 +252,11 @@ CollectionType, DictionaryLiteralConvertible {
      - returns: The key that was removed, or `nil` if the value was not present
      in the bidirectional map
      */
-    public mutating func removeKeyForValue(value: Value) -> Key? {
-        guard let key = rightDictionary.removeValueForKey(value) else {
+    public mutating func removeKey(forValue value: Value) -> Key? {
+        guard let key = rightDictionary.removeValue(forKey: value) else {
             return nil
         }
-        leftDictionary.removeValueForKey(key)
+        leftDictionary.removeValue(forKey: key)
         return key
     }
 
@@ -274,9 +274,9 @@ CollectionType, DictionaryLiteralConvertible {
 
      - Complexity: O(`self.count`).
      */
-    public mutating func removeAll(keepCapacity keepCapacity: Bool = false) {
-        leftDictionary.removeAll(keepCapacity: keepCapacity)
-        rightDictionary.removeAll(keepCapacity: keepCapacity)
+    public mutating func removeAll(keepingCapacity keepingCapacity: Bool = false) {
+        leftDictionary.removeAll(keepingCapacity: keepingCapacity)
+        rightDictionary.removeAll(keepingCapacity: keepingCapacity)
     }
 
     /**
@@ -292,8 +292,8 @@ CollectionType, DictionaryLiteralConvertible {
      - returns: A generator over the (key, value) pairs.
      - Complexity: O(1).
      */
-    public func generate() -> BidirectionalMapGenerator<Key, Value> {
-        return BidirectionalMapGenerator(dictionaryGenerator: leftDictionary.generate())
+    public func makeIterator() -> BidirectionalMapIterator<Key, Value> {
+        return BidirectionalMapIterator(dictionaryIterator: leftDictionary.makeIterator())
     }
 
     /**
@@ -359,24 +359,24 @@ extension BidirectionalMap {
         guard !isEmpty else {
             return nil
         }
-        return removeAtIndex(startIndex)
+        return remove(at: startIndex)
     }
 }
 
 /// A generator over the members of a `BidirectionalMap<Key, Value>`.
-public struct BidirectionalMapGenerator<Key: Hashable, Value: Hashable> : GeneratorType {
-    private var dictionaryGenerator: DictionaryGenerator<Key, Value>
+public struct BidirectionalMapIterator<Key: Hashable, Value: Hashable> : IteratorProtocol {
+    private var dictionaryIterator: DictionaryIterator<Key, Value>
 
     /**
      Create a new bidirectional map generate wrapper over the dictionary generator
 
      - parameter dictionaryGenerator:
      */
-    private init?(dictionaryGenerator: DictionaryGenerator<Key, Value>?) {
-        guard let dictionaryGenerator = dictionaryGenerator else {
+    private init?(dictionaryIterator: DictionaryIterator<Key, Value>?) {
+        guard let dictionaryIterator = dictionaryIterator else {
             return nil
         }
-        self.dictionaryGenerator = dictionaryGenerator
+        self.dictionaryIterator = dictionaryIterator
     }
 
     /**
@@ -384,8 +384,8 @@ public struct BidirectionalMapGenerator<Key: Hashable, Value: Hashable> : Genera
 
      - parameter dictionaryGenerator:
      */
-    private init(dictionaryGenerator: DictionaryGenerator<Key, Value>) {
-        self.dictionaryGenerator = dictionaryGenerator
+    private init(dictionaryIterator: DictionaryIterator<Key, Value>) {
+        self.dictionaryIterator = dictionaryIterator
     }
 
     /**
@@ -395,7 +395,7 @@ public struct BidirectionalMapGenerator<Key: Hashable, Value: Hashable> : Genera
      - Requires: No preceding call to `self.next()` has returned `nil`.
      */
     public mutating func next() -> (Key, Value)? {
-        return dictionaryGenerator.next()
+        return dictionaryIterator.next()
     }
 }
 
@@ -481,7 +481,7 @@ public func == <Key: Hashable, Value: Hashable>(
 
  (k, v) = d[i]
  */
-public struct BidirectionalMapIndex<Key: Hashable, Value: Hashable> : ForwardIndexType, Comparable {
+public struct BidirectionalMapIndex<Key: Hashable, Value: Hashable> : ForwardIndex, Comparable {
     private let dictionaryIndex: DictionaryIndex<Key, Value>
 
     /**
