@@ -29,6 +29,9 @@ xcuserdata
 # Swift Package Manager
 .build/
 
+# VI files
+*~
+
 # Carthage
 Carthage/Build
 *.framework.zip

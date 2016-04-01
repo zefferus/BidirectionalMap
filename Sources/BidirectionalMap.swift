@@ -471,15 +471,15 @@ public func == <Key: Hashable, Value: Hashable>(
 
  1.  Subscripting with an optional key, yielding an optional value:
 
- v = d[k]!
+        v = d[k]!
 
  2.  Subscripting with an optional value, yielding an optional key:
 
- k = d[k]!
+        k = d[k]!
 
  3.  Subscripting with an index, yielding a key-value pair:
 
- (k, v) = d[i]
+        (k, v) = d[i]
  */
 public struct BidirectionalMapIndex<Key: Hashable, Value: Hashable> : ForwardIndexType, Comparable {
     private let dictionaryIndex: DictionaryIndex<Key, Value>

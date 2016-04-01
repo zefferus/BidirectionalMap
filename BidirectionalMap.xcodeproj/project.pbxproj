@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		E21C5B381CAEF68C00EE26FB /* BidirectionalMap.h in Headers */ = {isa = PBXBuildFile; fileRef = E21C5B371CAEF68C00EE26FB /* BidirectionalMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E21C5B3F1CAEF68C00EE26FB /* BidirectionalMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E21C5B341CAEF68C00EE26FB /* BidirectionalMap.framework */; };
-		E21C5B441CAEF68C00EE26FB /* BidirectionalMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21C5B431CAEF68C00EE26FB /* BidirectionalMapTests.swift */; };
-		E21C5B771CAEF9FA00EE26FB /* BidirectionalMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21C5B761CAEF9FA00EE26FB /* BidirectionalMap.swift */; };
+		E28738621CAF336B00D2A72A /* BidirectionalMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28738611CAF336B00D2A72A /* BidirectionalMap.swift */; };
+		E28738641CAF337A00D2A72A /* BidirectionalMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E28738631CAF337A00D2A72A /* BidirectionalMapTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,9 +28,9 @@
 		E21C5B371CAEF68C00EE26FB /* BidirectionalMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BidirectionalMap.h; sourceTree = "<group>"; };
 		E21C5B391CAEF68C00EE26FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E21C5B3E1CAEF68C00EE26FB /* BidirectionalMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BidirectionalMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E21C5B431CAEF68C00EE26FB /* BidirectionalMapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidirectionalMapTests.swift; sourceTree = "<group>"; };
 		E21C5B451CAEF68C00EE26FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E21C5B761CAEF9FA00EE26FB /* BidirectionalMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BidirectionalMap.swift; sourceTree = "<group>"; };
+		E28738611CAF336B00D2A72A /* BidirectionalMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BidirectionalMap.swift; path = Sources/BidirectionalMap.swift; sourceTree = SOURCE_ROOT; };
+		E28738631CAF337A00D2A72A /* BidirectionalMapTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BidirectionalMapTests.swift; path = Tests/BidirectionalMapTests.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,8 +73,8 @@
 		E21C5B361CAEF68C00EE26FB /* BidirectionalMap */ = {
 			isa = PBXGroup;
 			children = (
+				E28738611CAF336B00D2A72A /* BidirectionalMap.swift */,
 				E21C5B371CAEF68C00EE26FB /* BidirectionalMap.h */,
-				E21C5B761CAEF9FA00EE26FB /* BidirectionalMap.swift */,
 				E21C5B391CAEF68C00EE26FB /* Info.plist */,
 			);
 			path = BidirectionalMap;
@@ -83,7 +83,7 @@
 		E21C5B421CAEF68C00EE26FB /* BidirectionalMapTests */ = {
 			isa = PBXGroup;
 			children = (
-				E21C5B431CAEF68C00EE26FB /* BidirectionalMapTests.swift */,
+				E28738631CAF337A00D2A72A /* BidirectionalMapTests.swift */,
 				E21C5B451CAEF68C00EE26FB /* Info.plist */,
 			);
 			path = BidirectionalMapTests;
@@ -197,7 +197,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E21C5B771CAEF9FA00EE26FB /* BidirectionalMap.swift in Sources */,
+				E28738621CAF336B00D2A72A /* BidirectionalMap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -205,7 +205,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E21C5B441CAEF68C00EE26FB /* BidirectionalMapTests.swift in Sources */,
+				E28738641CAF337A00D2A72A /* BidirectionalMapTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -349,16 +349,19 @@
 		E21C5B4C1CAEF68C00EE26FB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = BidirectionalMapTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zefferus.BidirectionalMapTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		E21C5B4D1CAEF68C00EE26FB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = BidirectionalMapTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zefferus.BidirectionalMapTests;
