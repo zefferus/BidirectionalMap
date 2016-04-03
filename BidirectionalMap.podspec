@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
   spec.name = "BidirectionalMap"
-  spec.version = "1.0.1"
-  spec.summary = "Sample framework from blog post, not for real world use."
+  spec.version = "1.0.4"
+  spec.summary = "Bidirectional map implementation in swift"
   spec.homepage = "https://github.com/zefferus/BidirectionalMap"
   spec.license = { type: 'MIT', file: 'LICENSE' }
   spec.authors = { "Tom Wilkinson" => 'tbondwilkinson@gmail.com' }
